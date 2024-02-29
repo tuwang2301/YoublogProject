@@ -1,0 +1,73 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div style="margin-top: 100px;" class="text-center d-flex flex-column align-items-center">
+    <div class="stories">
+        @for (var i = 0; i < 6; i++)
+        {
+            <img class="story rounded-3 border" src="/media/namdung.jpg" />
+        }
+    </div>
+    <div class="post-list">
+        @for (var i = 0; i < 6; i++)
+        {
+            <div class="post border">
+                <div class="d-flex align-items-center gap-3 px-3 pt-3">
+                    <img class="avatar-circle" src="~/media/namdung.jpg" />
+                    <div class="d-flex flex-column align-items-baseline">
+                        <span class="name">Nam Dung</span>
+                        <i>02/20/2024</i>
+                    </div>
+                </div>
+                <div class="text-start mt-3 px-3">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut pulvinar odio, non rutrum nisi. Vivamus sed pretium elit. Suspendisse iaculis blandit nunc sed vehicula. Etiam faucibus fringilla mauris quis consequat. Morbi pharetra elit ac massa rutrum laoreet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque congue neque eu elit pulvinar pellentesque. Integer sagittis ac eros congue mattis. Quisque vel dolor orci. Donec commodo neque et est suscipit, at ultrices ligula pharetra. Nulla at nulla non arcu laoreet venenatis. Donec ultrices dui turpis, accumsan cursus ex sodales eget.
+                </div>
+                <img class="photo" src="/media/motor.jpg" />
+                <div class="p-3 d-flex justify-content-between">
+                    <span>
+                        <i class="fa-solid fa-heart"></i> 123
+                    </span>
+                    <div class="d-flex gap-4">
+                        <span>7 Comments</span>
+                        <span>1 Shares</span>
+                    </div>
+                </div>
+                <div class="post-action d-flex justify-content-around border-top border-bottom">
+                    <div role="button" >
+                        <i class="fa-regular fa-heart fa-lg"></i>
+                        <span style="font-size: 20px;">Like</span>
+                    </div>
+                    <div role="button">
+                        <i class="fa-regular fa-comment fa-lg"></i>
+                        <span style="font-size: 20px;">Comment</span>
+                    </div>
+                    <div role="button">
+                        <i class="fa-regular fa-share-from-square fa-lg"></i>
+                        <span style="font-size: 20px;">Share</span>
+                    </div>
+                </div>
+                <div class="p-3">
+                    @for (var j = 0; j < 6; j++)
+                    {
+                        <div class="d-flex gap-3 my-3 align-items-center">
+                            <img class="avatar-circle" src="~/media/namdung.jpg" />
+                            <span style="background-color: #ffffff; width: fit-content" class="border rounded text-start p-1 px-3">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut pulvinar odio, non rutrum nisi. Vivamus sed
+                            </span>
+                        </div>
+                    }
+                    <div class="border-top d-flex gap-3 align-items-center pt-3 ">
+                        <img class="avatar-circle" src="~/media/namdung.jpg" />
+                        <form method="post" class="d-flex w-100 gap-3">
+                            <input name="comment rounded" class="w-100" />
+                            <button class="btn btn-dark fw-bold" >Comment</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

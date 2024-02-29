@@ -1,0 +1,87 @@
+﻿@page
+@model YoublogProject.Pages.SignupFormModel
+@{
+}
+
+<div>
+    <div class="col-md-8 mx-auto rounded border p-3">
+        <h2 class="text-center mb-5">Signup</h2>
+
+        @if (Model.errorMessage.Length > 0)
+        {
+            <div role="alert" class="alert alert-danger alert-dismissible fade show">
+                <strong>@Model.errorMessage</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        else if (Model.successMessage.Length > 0)
+        {
+            <div role="alert" class="alert alert-success alert-dismissible fade show">
+                <strong>@Model.successMessage</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Username</label>
+                <input class="form-control" asp-for="UserDto.Username" />
+                <span asp-validation-for="UserDto.Username" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Password</label>
+                <input class="form-control" asp-for="UserDto.Password" type="password" />
+                <span asp-validation-for="UserDto.Password" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Email</label>
+                <input class="form-control" asp-for="UserDto.Email" />
+                <span asp-validation-for="UserDto.Email" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Full Name</label>
+                <input class="form-control" asp-for="UserDto.FullName" />
+                <span asp-validation-for="UserDto.FullName" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Phone Number</label>
+                <input class="form-control" asp-for="UserDto.PhoneNumber" />
+                <span asp-validation-for="UserDto.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Gender</label>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="male" asp-for="UserDto.Gender" value="male" checked>
+                    <label class="form-check-label" for="male">Male</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="female" asp-for="UserDto.Gender" value="female">
+                    <label class="form-check-label" for="female">Female</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" id="other" asp-for="UserDto.Gender" value="other">
+                    <label class="form-check-label" for="other">Other</label>
+                </div>
+                <span asp-validation-for="UserDto.FullName" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Date of birth</label>
+                <input class="form-control" asp-for="UserDto.DateOfBirth" type="date"/>
+                <span asp-validation-for="UserDto.DateOfBirth" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <div class="offset-sm-4 col-sm-4 d-grid">
+                    <button class="btn btn-primary" type="submit">Signup</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,54 @@
+﻿@page
+@model YoublogProject.Pages.LoginFormModel
+@{
+}
+
+<style>
+    .login-form{
+        border-radius: 10px;
+    }
+</style>
+
+<div class="vh-100 d-flex align-items-center">
+    <div class="login-form col-md-8 mx-auto bg-dark border p-3">
+        <h2 class="text-center mb-5 fw-bolder text-white">Login</h2>
+
+        @if (Model.errorMessage.Length > 0)
+        {
+            <div role="alert" class="alert alert-danger alert-dismissible fade show mx-5 mb-5">
+                <strong>@Model.errorMessage</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        else if (Model.successMessage.Length > 0)
+        {
+            <div role="alert" class="alert alert-success alert-dismissible fade show">
+                <strong>@Model.successMessage</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <form class="mx-5" method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <input placeholder="Username" class="form-control" asp-for="LoginDto.Username" />
+                <span asp-validation-for="LoginDto.Username" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <input placeholder="Password" class="form-control" asp-for="LoginDto.Password" type="password" />
+                <span asp-validation-for="LoginDto.Password" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <a href="#" class="text-decoration-underline text-white">Forgot password?</a>
+            </div>
+
+            <div class="row mb-3">
+                <div class="offset-sm-4 col-sm-4 d-grid">
+                    <button class="btn btn-light fw-bold" type="submit">Login</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

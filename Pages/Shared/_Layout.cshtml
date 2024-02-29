@@ -1,0 +1,124 @@
+﻿@inject IHttpContextAccessor HttpContextAccessor;
+@using YoublogProject.Models
+@using YoublogProject.Utils
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProjectPRN</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ProjectPRN.styles.css" asp-append-version="true" />
+
+    <style>
+        .logo {
+            width: 60px;
+            mix-blend-mode: multiply;
+        }
+
+        .body {
+            height: 100px;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding-inline: 80px;
+        }
+
+        .btn-new-post {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .btn-friends {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+@{
+    var user = SessionUtil.GetObjectFromJson<User>(HttpContextAccessor.HttpContext.Session, "user") as User;
+}
+
+<body class="h-100">
+    <header>
+        <nav class="header navbar navbar-light bg-white justify-content-between py-3 border-bottom">
+            <a class="d-flex align-items-center gap-2 text-decoration-none" asp-area="" asp-page="/Index">
+                <img class="logo rounded" src="/media/logo.png" />
+                <h1 class="text-dark fw-bolder">Youblog</h1>
+            </a>
+            @if (user == null)
+            {
+                <div class="d-flex gap-4">
+                    <a class="btn btn-lg btn-dark text-decoration-none " asp-area="" asp-page="/Login">
+                        <strong>Login</strong>
+                    </a>
+                    <a class="btn btn-lg border rounde text-decoration-none text-black" asp-area="" asp-page="/Signup">
+                        <strong>Signup</strong>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="d-flex align-items-center gap-3">
+                    <strong class="text-dark">
+                        <h2 class="fw-bold">
+                            @user.FullName
+                        </h2>
+                    </strong>
+                    <div class="dropdown">
+                        <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            @if (user.Avatar != null)
+                            {
+                                <img style="width: 60px;height: 60px;" class="avatar-circle" src="~/media/@user.Avatar" />
+                            }
+                            else
+                            {
+                                <img class="logo" src="/media/user.png" />
+                            }
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" asp-area="" asp-page="/Profile">My Profile</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-page="/Friends/Index">My Friends</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-page="/Logout">Logout</a></li>
+                            <!-- Thêm các option khác tại đây -->
+                        </ul>
+                    </div>
+                </div>
+            }
+        </nav>
+    </header>
+    <div class="d-flex justify-content-center h-100">
+        <div style="width: 50%" class="h-100">
+            <main role="main" class="h-100">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <a role="button" asp-area="" asp-page="/Posts/NewPost" class="btn btn-lg btn-dark btn-new-post d-flex gap-3 align-items-center">
+        <span>New Post</span>
+        <i class="fa-solid fa-pen-to-square"></i>
+    </a>
+
+    <a role="button" asp-area="" asp-page="/Friends/Index" class="btn btn-lg btn-dark btn-friends d-flex gap-3 align-items-center">
+        <span>Friends</span>
+        <i class="fa-solid fa-user-group"></i>
+    </a>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/b25957ae4f.js"
+            crossorigin="anonymous"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
