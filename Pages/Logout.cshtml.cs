@@ -9,6 +9,7 @@ namespace YoublogProject.Pages
         public void OnGet()
         {
             SessionUtil.SetObjectAsJson(HttpContext.Session, "user", null);
+            TempData["SuccessMessage"] = "Lougout successfully";
             Response.Redirect("/");
         }
     }

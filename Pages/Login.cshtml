@@ -10,7 +10,7 @@
 </style>
 
 <div class="vh-100 d-flex align-items-center">
-    <div class="login-form col-md-8 mx-auto bg-dark border p-3">
+    <div class="login-form shadow-lg col-md-8 mx-auto bg-dark border p-3">
         <h2 class="text-center mb-5 fw-bolder text-white">Login</h2>
 
         @if (Model.errorMessage.Length > 0)
@@ -20,10 +20,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
-        else if (Model.successMessage.Length > 0)
+        else if (TempData["SuccessMessage"] != null)
         {
-            <div role="alert" class="alert alert-success alert-dismissible fade show">
-                <strong>@Model.successMessage</strong>
+            <div role="alert" class="alert alert-success alert-dismissible fade show mx-5 mb-5">
+                <strong>@TempData["SuccessMessage"]</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }

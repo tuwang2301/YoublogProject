@@ -26,6 +26,7 @@
             top: 0;
             width: 100%;
             padding-inline: 80px;
+            z-index: 999;
         }
 
         .btn-new-post {
@@ -75,21 +76,20 @@
                         </h2>
                     </strong>
                     <div class="dropdown">
-                        <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                             @if (user.Avatar != null)
                             {
                                 <img style="width: 60px;height: 60px;" class="avatar-circle" src="~/media/@user.Avatar" />
                             }
                             else
                             {
-                                <img class="logo" src="/media/user.png" />
+                                <img class="logo" src="https://i.pinimg.com/originals/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg" />
                             }
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <li><a class="dropdown-item" asp-area="" asp-page="/Profile">My Profile</a></li>
                             <li><a class="dropdown-item" asp-area="" asp-page="/Friends/Index">My Friends</a></li>
                             <li><a class="dropdown-item" asp-area="" asp-page="/Logout">Logout</a></li>
-                            <!-- Thêm các option khác tại đây -->
                         </ul>
                     </div>
                 </div>

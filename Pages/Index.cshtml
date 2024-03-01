@@ -8,13 +8,17 @@
     <div class="stories">
         @for (var i = 0; i < 6; i++)
         {
-            <img class="story rounded-3 border" src="/media/namdung.jpg" />
+            <div class="story shadow">
+                <img class="avatar-circle" src="~/media/namdung.jpg" />
+                <img class="story-image rounded-3 border" src="/media/namdung.jpg" />
+                <span class="fw-bold text-white">Nam Dung</span>
+            </div>
         }
     </div>
     <div class="post-list">
         @for (var i = 0; i < 6; i++)
         {
-            <div class="post border">
+            <div class="post border shadow">
                 <div class="d-flex align-items-center gap-3 px-3 pt-3">
                     <img class="avatar-circle" src="~/media/namdung.jpg" />
                     <div class="d-flex flex-column align-items-baseline">

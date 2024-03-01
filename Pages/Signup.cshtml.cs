@@ -59,6 +59,8 @@ namespace YoublogProject.Pages
 
             successMessage = "User created successfully";
 
+            TempData["SuccessMessage"] = "User created successfully";
+
             Response.Redirect("/Login");
         }
     }
