@@ -1,4 +1,5 @@
 ﻿@page
+@using YoublogProject.Models
 @model YoublogProject.Pages.ProfileModel
 @{
 }
@@ -27,39 +28,175 @@
         padding: 20px;
     }
 
-    .profile-info span {
-        text-align: right;
-    }
+        .profile-info span {
+            text-align: right;
+        }
 </style>
 
 
-<div style="margin-top: 100px">
+<div class="vh-100 d-flex align-items-center">
 
-<<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card profile-card">
-                <img src="/media/namdung.jpg" class="card-img-top avatar" alt="Avatar">
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="card profile-card">
-                <div class="card-header profile-header bg-dark">
-                    <h3>My Profile</h3>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 d-flex flex-column justify-content-between">
+                <div class="card profile-card shadow">
+                    <img src="/media/@Model.User.Avatar" class="card-img-top avatar" alt="Avatar">
                 </div>
-                <div class="card-body profile-info">
-                    <h3>Username: <span class="text-secondary">Your username</span></h3>
-                    <h3>Password: <span class="text-secondary">Your password</span></h3>
-                    <h3>Email: <span class="text-secondary">Your email</span></h3>
-                    <h3>Full Name: <span class="text-secondary">Your full name</span></h3>
-                    <h3>Date of Birth: <span class="text-secondary">Your date of birth</span></h3>
-                    <h3>Gender: <span class="text-secondary">Your gender</span></h3>
-                    <h3>Address: <span class="text-secondary">Your address</span></h3>
-                    <h3>Phone Number: <span class="text-secondary">Your phone number</span></h3>
-                    <h3>Created At: <span class="text-secondary">Date when account was created</span></h3>
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Edit Profile
+                </button>
+            </div>
+            <div class="col-md-7">
+                <div class="card profile-card">
+                    <div class="card-header profile-header bg-dark">
+                        <h3>My Profile</h3>
+                    </div>
+                    <div class="card-body profile-info">
+                        <div class="d-flex justify-content-between border-bottom">
+                            <h3>Username:</h3> <h4 class="text-secondary">@Model.User.Username</h4>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom">
+                            <h3>Email:</h3> <h4 class="text-secondary">@Model.User.Email</h4>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom">
+                            <h3>Full Name:</h3> <h4 class="text-secondary">@Model.User.FullName</h4>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom">
+                            <h3>Date of Birth:</h3> <h4 class="text-secondary">@Model.User.DateOfBirth?.ToString("dd/MM/yyyy")</h4>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom">
+                            <h3>Gender: </h3> <h4 class="text-secondary">@Model.User.Gender?.ToUpper()</h4>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom">
+                            <h3>Address: </h3> <h4 class="text-secondary">@Model.User.Address</h4>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom">
+                            <h3>Phone Number: </h3> <h4 class="text-secondary">@Model.User.PhoneNumber</h4>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom">
+                            <h3>Join At</h3> <h4 class="text-secondary">@Model.User.CreatedAt?.ToString("dd/MM/yyyy")</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Profile Edit</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="profile" method="post">
+                                <div>
+                                    <div class="mb-4 d-flex justify-content-center">
+                                        <img class="card shadow" id="selectedImage" src="/media/@Model.User.Avatar"
+                                             alt="example placeholder" style="width: 200px; height: 200px; object-fit: cover" />
+                                    </div>
+                                    <div>
+                                        <input class="form-control" asp-for="Profile.Avatar"/>
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="btn btn-dark btn-rounded">
+                                            <label class="form-label text-white m-1" for="avatar">Choose file</label>
+                                            <input class="form-control d-none" id="avatar" onchange="displaySelectedImage(event, 'selectedImage')" asp-for="Profile.Avatar" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fullName" class="form-label">Full Name:</label>
+                                    <input type="text" id="fullName" class="form-control" value="@Model.User.FullName" asp-for="Profile.FullName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="dateOfBirth" class="form-label">Date of Birth:</label>
+                                    <input type="date" id="dateOfBirth" class="form-control" value="@Model.User.DateOfBirth?.ToString("yyyy-MM-dd")" asp-for="Profile.DateOfBirth">
+                                </div>
+                                <div class="form-group mt-2">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <label class="form-label">Gender:</label>
+
+                                        <div class="form-check">
+                                            @if (Model.User.Gender == "male")
+                                            {
+                                                <input class="form-check-input" type="radio" name="gender" id="male" value="male" checked asp-for="Profile.Gender">
+                                            }
+                                            else
+                                            {
+                                                <input class="form-check-input" type="radio" name="gender" id="male" value="male" asp-for="Profile.Gender">
+                                            }
+                                            <label class="form-check-label" for="male">Male</label>
+                                        </div>
+                                        <div class="form-check">
+                                            @if (Model.User.Gender == "female")
+                                            {
+                                                <input class="form-check-input" type="radio" name="gender" id="female" value="female" checked asp-for="Profile.Gender">
+                                            }
+                                            else
+                                            {
+                                                <input class="form-check-input" type="radio" name="gender" id="female" value="female" asp-for="Profile.Gender">
+                                            }
+                                            <label class="form-check-label" for="female">Female</label>
+                                        </div>
+                                        <div class="form-check">
+
+                                            @if (Model.User.Gender == "other")
+                                            {
+                                                <input class="form-check-input" type="radio" name="gender" id="other" value="other" checked asp-for="Profile.Gender">
+                                            }
+                                            else
+                                            {
+                                                <input class="form-check-input" type="radio" name="gender" id="other" value="other" asp-for="Profile.Gender">
+                                            }
+
+
+                                            <label class="form-check-label" for="other">Other</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address" class="form-label">Address:</label>
+                                    <input type="text" id="address" class="form-control" value="@Model.User.Address" asp-for="Profile.Address">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phoneNumber" class="form-label">Phone Number:</label>
+                                    <input type="text" id="phoneNumber" class="form-control" value="@Model.User.PhoneNumber" asp-for="Profile.PhoneNumber">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button form="profile" type="submit" class="btn btn-dark">Save changes</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
+
+<script>
+    var myModal = document.getElementById('myModal')
+    var myInput = document.getElementById('myInput')
+
+    myModal.addEventListener('shown.bs.modal', function () {
+        myInput.focus()
+    })
+
+    function displaySelectedImage(event, elementId) {
+        const selectedImage = document.getElementById(elementId);
+        const fileInput = event.target;
+
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                selectedImage.src = e.target.result;
+            };
+
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+</script>
