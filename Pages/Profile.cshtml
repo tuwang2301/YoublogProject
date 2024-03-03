@@ -90,14 +90,11 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="profile" method="post">
+                            <form id="profile" method="post" enctype="multipart/form-data">
                                 <div>
                                     <div class="mb-4 d-flex justify-content-center">
                                         <img class="card shadow" id="selectedImage" src="/media/@Model.User.Avatar"
                                              alt="example placeholder" style="width: 200px; height: 200px; object-fit: cover" />
-                                    </div>
-                                    <div>
-                                        <input class="form-control" asp-for="Profile.Avatar"/>
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <div class="btn btn-dark btn-rounded">
@@ -121,22 +118,22 @@
                                         <div class="form-check">
                                             @if (Model.User.Gender == "male")
                                             {
-                                                <input class="form-check-input" type="radio" name="gender" id="male" value="male" checked asp-for="Profile.Gender">
+                                                <input class="form-check-input" type="radio" id="male" value="male" checked asp-for="Profile.Gender">
                                             }
                                             else
                                             {
-                                                <input class="form-check-input" type="radio" name="gender" id="male" value="male" asp-for="Profile.Gender">
+                                                <input class="form-check-input" type="radio" id="male" value="male" asp-for="Profile.Gender">
                                             }
                                             <label class="form-check-label" for="male">Male</label>
                                         </div>
                                         <div class="form-check">
                                             @if (Model.User.Gender == "female")
                                             {
-                                                <input class="form-check-input" type="radio" name="gender" id="female" value="female" checked asp-for="Profile.Gender">
+                                                <input class="form-check-input" type="radio" id="female" value="female" checked asp-for="Profile.Gender">
                                             }
                                             else
                                             {
-                                                <input class="form-check-input" type="radio" name="gender" id="female" value="female" asp-for="Profile.Gender">
+                                                <input class="form-check-input" type="radio" id="female" value="female" asp-for="Profile.Gender">
                                             }
                                             <label class="form-check-label" for="female">Female</label>
                                         </div>
@@ -144,11 +141,11 @@
 
                                             @if (Model.User.Gender == "other")
                                             {
-                                                <input class="form-check-input" type="radio" name="gender" id="other" value="other" checked asp-for="Profile.Gender">
+                                                <input class="form-check-input" type="radio" id="other" value="other" checked asp-for="Profile.Gender">
                                             }
                                             else
                                             {
-                                                <input class="form-check-input" type="radio" name="gender" id="other" value="other" asp-for="Profile.Gender">
+                                                <input class="form-check-input" type="radio" id="other" value="other" asp-for="Profile.Gender">
                                             }
 
 

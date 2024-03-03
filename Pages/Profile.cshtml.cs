@@ -73,9 +73,6 @@ namespace YoublogProject.Pages
                 {
                     Profile.Avatar.CopyTo(stream);
                 }
-                string oldImage = environment.WebRootPath + "/media" + User.Avatar;
-                System.IO.File.Delete(oldImage);
-
             }
             updateUser.FullName = Profile.FullName;
             updateUser.PhoneNumber = Profile.PhoneNumber;
@@ -87,6 +84,9 @@ namespace YoublogProject.Pages
             context.SaveChanges();
 
             User = updateUser;
+
+            SessionUtil.SetObjectAsJson(HttpContext.Session, "user", User);
+
             ModelState.Clear();
             Response.Redirect("/Profile?id=" + User.UserId);
 

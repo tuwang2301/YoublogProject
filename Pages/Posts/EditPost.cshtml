@@ -2,7 +2,7 @@
 @inject IHttpContextAccessor HttpContextAccessor;
 @using YoublogProject.Models
 @using YoublogProject.Utils
-@model YoublogProject.Pages.Posts.NewPostModel
+@model YoublogProject.Pages.Posts.EditPostModel
 @{
 }
 
@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <label for="privacyMode">Privacy Mode:</label>
                     <select class="form-select" id="privacyMode" asp-for="PostDto.PrivacyMode">
-                        <option value="public">Public</option>
+                        <option value="public" >Public</option>
                         <option value="private">Private</option>
                         <option value="friends">Friends</option>
                     </select>
@@ -32,7 +32,9 @@
             </div>
             <div class="form-group  mb-3">
                 <label class="form-label text-start" for="contentDescription">Content Description:</label>
-                <textarea class="form-control" id="contentDescription" rows="3" asp-for="PostDto.Description"></textarea>
+                <textarea class="form-control" id="contentDescription" rows="3" asp-for="PostDto.Description">
+                    @Model?.Post?.Content?.Description
+                </textarea>
             </div>
 
             <div class="form-group  mb-3">
@@ -41,8 +43,16 @@
             </div>
 
             <div class="mb-4">
+                @if (Model?.Post?.Content?.ContentUrl != null)
+                {
+                    <img id="selectedImage" src="/media/@Model?.Post?.Content?.ContentUrl"
+                    alt="example placeholder" style="width: 100%; height: auto; object-fit: cover" />
+                }else
+                {
+                    
                 <img id="selectedImage" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/D.E.M.O._Logo_2006.svg"
                      alt="example placeholder" style="width: 100%; height: auto; object-fit: cover" />
+                }
             </div>
            
             <button type="submit" class="btn btn-dark">Submit</button>
@@ -51,6 +61,8 @@
 </div>
 
 <script>
+        document.getElementById("privacyMode").value = "@Model?.Post?.PrivacyMode";
+
     function displaySelectedImage(event, elementId) {
         const selectedImage = document.getElementById(elementId);
         const fileInput = event.target;

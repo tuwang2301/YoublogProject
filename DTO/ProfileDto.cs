@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -16,6 +17,7 @@ public partial class ProfileDto
 
     [DataType(DataType.Upload)]
     [FileExtensions(Extensions = "png,jpg,jpeg")]
+    [BindProperty]
     public IFormFile? Avatar { get; set; }
 
     [Display(Name = "Phone Number")]
