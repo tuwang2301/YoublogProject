@@ -65,7 +65,7 @@ namespace YoublogProject.Pages
             string newFileName = updateUser.Avatar;
             if (Profile.Avatar != null)
             {
-              
+
                 newFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
                 newFileName += Path.GetExtension(Profile.Avatar.FileName);
                 string imageFullPath = environment.WebRootPath + "/media/" + newFileName;
@@ -93,5 +93,11 @@ namespace YoublogProject.Pages
 
 
         }
+        public IActionResult OnPostGetAjax(string name)
+        {
+            return new JsonResult("Bye " + name);
+        }
     }
+
+    
 }

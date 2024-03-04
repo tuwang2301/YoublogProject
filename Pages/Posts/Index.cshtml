@@ -1,9 +1,15 @@
 ﻿@page
+@inject IHttpContextAccessor HttpContextAccessor;
+@using YoublogProject.Utils
 @using YoublogProject.Models
-@model YoublogProject.Pages.Posts.MyPostsModel
+@model YoublogProject.Pages.Posts.IndexModel
 @{
 }
+@Html.AntiForgeryToken()
 
+@{
+    var user = SessionUtil.GetObjectFromJson<User>(HttpContextAccessor.HttpContext.Session, "user") as User;
+}
 <style>
     .filter {
         position: fixed;
@@ -16,7 +22,7 @@
 
     <div class="post-list filter border rounded-3 shadow-sm p-3 mb-3">
         <form class="d-flex flex-column justify-content-between mt-0">
-        <h3>Filters</h3>
+            <h3>Filters</h3>
             <div class="form-group mb-3">
                 <label for="privacyMode">Privacy Mode:</label>
                 <select class="form-select" id="privacyMode">
@@ -56,6 +62,7 @@
     <div class="post-list">
         @foreach (Post p in Model.Posts)
         {
+            var checkLike = Model.Reactions.FirstOrDefault(r => r.PostId == p.PostId && r.UserId == user?.UserId) != null;
             <div class="post border shadow">
                 <div class="d-flex w-100 justify-content-between align-items-center px-3 pt-3">
 
@@ -89,7 +96,8 @@
                 <img class="photo" src="/media/@p.Content?.ContentUrl" />
                 <div class="p-3 d-flex justify-content-between">
                     <span>
-                        <i class="fa-solid fa-heart"></i> 123
+                        <i class="fa-solid fa-heart"></i>
+                        <span id="like-count-@p.PostId">@p.Reactions.Count</span>
                     </span>
                     <div class="d-flex gap-4">
                         <span>7 Comments</span>
@@ -97,8 +105,16 @@
                     </div>
                 </div>
                 <div class="post-action d-flex justify-content-around border-top border-bottom">
-                    <div role="button">
-                        <i class="fa-regular fa-heart fa-lg"></i>
+                    <div role="button" class="like" data-post-id="@p.PostId">
+                        @if (checkLike)
+                        {
+                            <i id="like-icon-@p.PostId" class="fa-solid fa-heart fa-lg"></i>
+                        }
+                        else
+                        {
+                            <i id="like-icon-@p.PostId" class="fa-regular fa-heart fa-lg"></i>
+
+                        }
                         <span style="font-size: 20px;">Like</span>
                     </div>
                     <div role="button">
@@ -133,3 +149,41 @@
     </div>
 
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(".like").click(function () {
+            var postId = $(this).data('post-id');
+            var userId = @user?.UserId; // Lấy UserId từ mô hình Razor
+
+            $.ajax({
+                type: "POST",
+                url: "/Posts?handler=GetAjax",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: { "userId": userId, "postId": postId },
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: "json",
+                success: function (msg) {
+                    var likeCountSpan = $('#like-count-' + postId);
+                    var currentCount = parseInt(likeCountSpan.text());
+                    if (msg == "like") {
+                        likeCountSpan.text(currentCount + 1);
+                        $('#like-icon-' + postId).removeClass('fa-regular').addClass('fa-solid');
+
+                    } else {
+                        likeCountSpan.text(currentCount - 1);
+                        $('#like-icon-' + postId).removeClass('fa-solid').addClass('fa-regular');
+                    }
+                },
+                error: function (error) {
+                    console.log("miaaaaaa")
+                    console.log(error, 'hhuuuuu');
+                }
+            });
+        });
+    </script>
+}

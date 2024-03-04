@@ -197,3 +197,29 @@
         }
     }
 </script>
+
+@section Scripts
+        {
+    <script type="text/javascript">
+        $("#callAjax").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Posts?handler=GetAjax",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: { "name": "Mark" },
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: "json",
+                success: function (msg) {
+                    console.log(msg);
+                },
+                error: function (error) {
+                    console.log("miaaaaaa")
+                    console.log(error, 'hhuuuuu');
+                }
+            });
+        });
+    </script>
+}
