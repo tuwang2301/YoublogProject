@@ -1,0 +1,135 @@
+﻿@page
+@using YoublogProject.Models
+@model YoublogProject.Pages.Posts.MyPostsModel
+@{
+}
+
+<style>
+    .filter {
+        position: fixed;
+        left: 30px;
+        width: 20%;
+    }
+</style>
+
+<div style="margin-top: 150px;" class="d-flex flex-column align-items-center">
+
+    <div class="post-list filter border rounded-3 shadow-sm p-3 mb-3">
+        <form class="d-flex flex-column justify-content-between mt-0">
+        <h3>Filters</h3>
+            <div class="form-group mb-3">
+                <label for="privacyMode">Privacy Mode:</label>
+                <select class="form-select" id="privacyMode">
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                    <option value="friends">Friends</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="sortField">Sort Field:</label>
+                <select class="form-select" id="sortField">
+                    <option value="like">Like</option>
+                    <option value="comment">Comment</option>
+                    <option value="share">Share</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="sortField">Sort Field:</label>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="asc" value="asc" checked>
+                        <label class="form-check-label" for="asc">ASC</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="desc" value="desc">
+                        <label class="form-check-label" for="desc">DESC</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-dark">Filter</button>
+        </form>
+    </div>
+
+    <div class="post-list">
+        @foreach (Post p in Model.Posts)
+        {
+            <div class="post border shadow">
+                <div class="d-flex w-100 justify-content-between align-items-center px-3 pt-3">
+
+                    <div class="d-flex align-items-center gap-3">
+                        <img class="avatar-circle" src="~/media/@p.User?.Avatar" />
+                        <div class="d-flex flex-column align-items-baseline">
+                            <span class="name">@p.User?.FullName</span>
+                            <i>@p.CreatedAt?.ToString("MM/dd/yyyy")</i>
+                        </div>
+                    </div>
+
+                    <div>
+                        @if (p.PrivacyMode == "public")
+                        {
+                            <i class="fa-solid fa-earth-americas fa-lg"></i>
+                        }
+                        else if (p.PrivacyMode == "friends")
+                        {
+                            <i class="fa-solid fa-user-group fa-lg"></i>
+                        }
+                        else
+                        {
+
+                            <i class="fa-solid fa-user fa-lg"></i>
+                        }
+                    </div>
+                </div>
+                <div class="text-start mt-3 px-3">
+                    @p.Content?.Description
+                </div>
+                <img class="photo" src="/media/@p.Content?.ContentUrl" />
+                <div class="p-3 d-flex justify-content-between">
+                    <span>
+                        <i class="fa-solid fa-heart"></i> 123
+                    </span>
+                    <div class="d-flex gap-4">
+                        <span>7 Comments</span>
+                        <span>1 Shares</span>
+                    </div>
+                </div>
+                <div class="post-action d-flex justify-content-around border-top border-bottom">
+                    <div role="button">
+                        <i class="fa-regular fa-heart fa-lg"></i>
+                        <span style="font-size: 20px;">Like</span>
+                    </div>
+                    <div role="button">
+                        <i class="fa-regular fa-comment fa-lg"></i>
+                        <span style="font-size: 20px;">Comment</span>
+                    </div>
+                    <div role="button">
+                        <i class="fa-regular fa-share-from-square fa-lg"></i>
+                        <span style="font-size: 20px;">Share</span>
+                    </div>
+                </div>
+                <div class="p-3">
+                    @for (var j = 0; j < 6; j++)
+                    {
+                        <div class="d-flex gap-3 my-3 align-items-center">
+                            <img class="avatar-circle" src="~/media/namdung.jpg" />
+                            <span style="background-color: #ffffff; width: fit-content" class="border rounded text-start p-1 px-3">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut pulvinar odio, non rutrum nisi. Vivamus sed
+                            </span>
+                        </div>
+                    }
+                    <div class="border-top d-flex gap-3 align-items-center pt-3 ">
+                        <img class="avatar-circle" src="~/media/namdung.jpg" />
+                        <form method="post" class="d-flex w-100 gap-3">
+                            <input name="comment rounded" class="w-100" />
+                            <button class="btn btn-dark fw-bold">Comment</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
