@@ -90,7 +90,10 @@
                 <div class="text-start mt-3 px-3">
                     @p.Content?.Description
                 </div>
-                <img class="photo" src="/media/@p.Content?.ContentUrl" />
+                @if (p?.Content?.ContentUrl != null)
+                {
+                    <img class="photo" src="/media/@p.Content?.ContentUrl" />
+                }
                 <div class="p-3 d-flex justify-content-between">
                     <span>
                         <i class="fa-solid fa-heart"></i>
@@ -126,12 +129,12 @@
                 <div class="p-3">
                     @for (var j = 0; j < 6; j++)
                     {
-                        <div class="d-flex gap-3 my-3 align-items-center">
+                        <d  iv class="d-flex gap-3 my-3 align-items-center">
                             <img class="avatar-circle" src="~/media/namdung.jpg" />
                             <span style="background-color: #ffffff; width: fit-content" class="border rounded text-start p-1 px-3">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut pulvinar odio, non rutrum nisi. Vivamus sed
                             </span>
-                        </div>
+                        </d>
                     }
                     <div class="border-top d-flex gap-3 align-items-center pt-3 ">
                         <img class="avatar-circle" src="~/media/namdung.jpg" />

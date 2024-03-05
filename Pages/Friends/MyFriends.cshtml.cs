@@ -9,7 +9,9 @@ namespace YoublogProject.Pages.Friends
     {
         private readonly YoublogContext context;
 
-        public List<User> Users { get; set; } = new List<User>();
+        public List<User> Friends { get; set; } = new List<User>();
+
+        public List<FriendRequest> FriendRequests { get; set; } = new List<FriendRequest>();
 
         public MyFriendsModel(YoublogContext context)
         {
@@ -24,7 +26,13 @@ namespace YoublogProject.Pages.Friends
                 return;
             }
 
-            Users = context.Friends
+            FriendRequests = context.FriendRequests.
+                Where(fr => fr.FromUserId == id || fr.ToUserId == id)
+                .Include(fr => fr.FromUser)
+                .Include(fr => fr.ToUser)
+                .ToList();
+
+            Friends = context.Friends
             .Where(f => f.UserId1 == id || f.UserId2 == id)
             .Select(f => f.UserId1 == id ? f.UserId2Navigation : f.UserId1Navigation)
             .ToList();

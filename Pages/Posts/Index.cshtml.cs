@@ -19,7 +19,7 @@ namespace YoublogProject.Pages.Posts
             this.context = context;
         }
 
-        public void OnGet()
+        public void OnGet(int? id)
         {
             var user = SessionUtil.GetObjectFromJson<User>(HttpContext.Session, "user");
 
@@ -29,15 +29,31 @@ namespace YoublogProject.Pages.Posts
                 return;
             }
 
-            Posts = context.Posts
-                .Where(p => p.UserId == user.UserId)
+            Reactions = context.Reactions.ToList();
+
+            var posts = context.Posts
+                .Where(p => p.UserId == id)
                 .Include(p => p.Content)
                 .Include(p => p.User)
                 .Include(p => p.Reactions)
-                .OrderByDescending(p => p.CreatedAt) 
+                .OrderByDescending(p => p.CreatedAt)
                 .ToList();
 
-            Reactions = context.Reactions.ToList();
+            if (user.UserId != id)
+            {
+                Posts = posts.Where(p =>
+                    (p.PrivacyMode == "public") ||
+                    (p.PrivacyMode == "friends" && context.Friends.Any(f =>
+                        (f.UserId1 == user.UserId && f.UserId2 == p.UserId) ||
+                        (f.UserId2 == user.UserId && f.UserId1 == p.UserId)
+                    ))).ToList();
+            }else
+            {
+                Posts = posts.ToList();
+            }
+
+
+
 
         }
 

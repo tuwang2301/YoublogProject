@@ -1,7 +1,26 @@
 ﻿@page
+@inject IHttpContextAccessor HttpContextAccessor;
+@using YoublogProject.Utils
+@using YoublogProject.Models
 @model YoublogProject.Pages.Friends.MyFriendsModel
 @{
 }
+
+@{
+    var user = SessionUtil.GetObjectFromJson<User>(HttpContextAccessor.HttpContext.Session, "user") as User;
+}
+
+<style>
+    .user-card {
+        transition: all ease-in-out 0.2s;
+        background-color: #cdcdcd;
+    }
+
+        .user-card:hover {
+            background-color: white;
+            cursor: pointer;
+        }
+</style>
 
 <div style="margin-top: 150px;" class="d-flex flex-column">
     <div class="post-list filter border rounded-3 shadow-sm p-3 mb-3">
@@ -39,10 +58,62 @@
         </form>
     </div>
 
-    <div class="post border shadow">
-        <h1 class="m-3 p-3 fw-bolder border-bottom">Friends Request</h1>
+    <div class="post border shadow mb-3 p-5">
+        <h1 class="m-3 mt-0 p-3 fw-bolder border-bottom">Friends Request</h1>
+        @if (Model.FriendRequests.Count > 0)
+        {
+            @foreach (FriendRequest fr in Model.FriendRequests)
+            {
+                @if (fr.FromUserId == user?.UserId)
+                {
+                    <div class="user-card d-flex justify-content-between align-items-center border p-3 my-3 rounded-3">
+                        <div class="d-flex align-items-center gap-3" onclick="window.location.href='/Profile?id=@fr?.ToUserId'">
+                            <img class="avatar-circle" src="/media/@fr?.ToUser?.Avatar" />
+                            <h3>@fr?.ToUser?.FullName</h3>
+                        </div>
+                        <button type="button" class="btn btn-danger" onclick="window.location.href='/Friends?id=@fr?.ToUserId&type=delete-fr'">
+                            Remove Request
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <div class="user-card d-flex justify-content-between align-items-center border p-3 my-3 rounded-3">
+                        <div class="d-flex align-items-center gap-3" onclick="window.location.href='/Profile?id=@fr?.FromUserId'">
+                            <img class="avatar-circle" src="/media/@fr?.FromUser?.Avatar" />
+                            <h3>@fr?.FromUser?.FullName</h3>
+
+                        </div>
+                        <button type="button" class="btn btn-dark fw-bold" onclick="window.location.href='/Friends?id=@fr?.FromUserId&type=add'">
+                            Accept Request
+                        </button>
+                    </div>
+                }
+            }
+        }
+        else
+        {
+            <h2>No Requests</h2>
+        }
+
     </div>
-    <div class="post border shadow">
-        <h1 class="m-3 p-3 fw-bolder border-bottom">My Friends</h1>
+    <div class="post border shadow mb-3 p-5">
+        <h1 class="m-3 mt-0 p-3 fw-bolder border-bottom">My Friends</h1>
+        @if (Model.Friends.Count > 0)
+        {
+            @foreach (User fr in Model.Friends)
+            {
+                <div class="user-card d-flex justify-content-between align-items-center border p-3 my-3 rounded-3" onclick="window.location.href='/Profile?id=@fr?.UserId'">
+                    <div class="d-flex align-items-center gap-3">
+                        <img class="avatar-circle" src="/media/@fr?.Avatar" />
+                        <h3>@fr?.FullName</h3>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <h2>No Friends</h2>
+        }
     </div>
 </div>

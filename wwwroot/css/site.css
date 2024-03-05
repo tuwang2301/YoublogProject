@@ -35,6 +35,12 @@ html {
     border: 3px solid white;
 }
 
+.profile-avatar {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+}
+
 .name {
     font-weight: bold;
     font-size: 20px;
