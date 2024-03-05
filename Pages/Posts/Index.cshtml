@@ -10,13 +10,6 @@
 @{
     var user = SessionUtil.GetObjectFromJson<User>(HttpContextAccessor.HttpContext.Session, "user") as User;
 }
-<style>
-    .filter {
-        position: fixed;
-        left: 30px;
-        width: 20%;
-    }
-</style>
 
 <div style="margin-top: 150px;" class="d-flex flex-column align-items-center">
 
@@ -87,6 +80,10 @@
                         {
 
                             <i class="fa-solid fa-user fa-lg"></i>
+                        }
+                        @if (user?.UserId == p.UserId)
+                        {
+                            <i onclick="window.location.href='/Posts/EditPost?id=@p.PostId'" class="fa-solid fa-pen-to-square fa-lg edit-icon"></i>
                         }
                     </div>
                 </div>

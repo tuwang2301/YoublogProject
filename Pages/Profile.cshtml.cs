@@ -16,6 +16,10 @@ namespace YoublogProject.Pages
 
         public User User { get; set; } = new User();
 
+        public FriendRequest FriendRequest { get; set; } = new FriendRequest();
+
+        public Friend Friend { get; set; } = new Friend();
+
         public ProfileModel(YoublogContext context, IWebHostEnvironment environment)
         {
             this.context = context;
@@ -24,6 +28,7 @@ namespace YoublogProject.Pages
 
         public void OnGet(int? id)
         {
+            var user = SessionUtil.GetObjectFromJson<User>(HttpContext.Session, "user");
 
             if (id == null)
             {
@@ -44,6 +49,18 @@ namespace YoublogProject.Pages
             Profile.DateOfBirth = updateUser.DateOfBirth;
 
             User = updateUser;
+
+            if (user == null)
+            {
+                return;
+            }
+
+            FriendRequest = context.FriendRequests.FirstOrDefault(fr => fr.FromUserId == id || fr.ToUserId == id);
+
+                Friend = context.Friends.FirstOrDefault(fr =>
+            (fr.UserId1 == user.UserId && fr.UserId2 == id) ||
+            (fr.UserId2 == user.UserId && fr.UserId1 == id));
+
 
         }
 
@@ -99,5 +116,5 @@ namespace YoublogProject.Pages
         }
     }
 
-    
+
 }

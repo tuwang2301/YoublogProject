@@ -70,7 +70,8 @@ namespace YoublogProject.Pages.Posts
             context.Posts.Add(post);
             context.SaveChanges();
 
-
+            Response.Redirect("/Index");
+            return;
         }
     }
 }

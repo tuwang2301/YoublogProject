@@ -34,6 +34,7 @@ namespace YoublogProject.Pages.Posts
                 .Include(p => p.Content)
                 .Include(p => p.User)
                 .Include(p => p.Reactions)
+                .OrderByDescending(p => p.CreatedAt) 
                 .ToList();
 
             Reactions = context.Reactions.ToList();
@@ -44,7 +45,7 @@ namespace YoublogProject.Pages.Posts
         {
             var react = context.Reactions.FirstOrDefault(r => r.UserId == userId && r.PostId == postId);
 
-            if(react == null)
+            if (react == null)
             {
                 context.Reactions.Add(new Reaction()
                 {
@@ -61,7 +62,7 @@ namespace YoublogProject.Pages.Posts
                 return new JsonResult("unlike");
             }
 
-            
+
         }
     }
 }

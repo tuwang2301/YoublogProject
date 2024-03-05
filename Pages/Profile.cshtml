@@ -1,4 +1,6 @@
 ﻿@page
+@inject IHttpContextAccessor HttpContextAccessor;
+@using YoublogProject.Utils
 @using YoublogProject.Models
 @model YoublogProject.Pages.ProfileModel
 @{
@@ -33,6 +35,9 @@
         }
 </style>
 
+@{
+    var user = SessionUtil.GetObjectFromJson<User>(HttpContextAccessor.HttpContext.Session, "user") as User;
+}
 
 <div class="vh-100 d-flex align-items-center">
 
@@ -42,9 +47,51 @@
                 <div class="card profile-card shadow">
                     <img src="/media/@Model.User.Avatar" class="card-img-top avatar" alt="Avatar">
                 </div>
-                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Edit Profile
-                </button>
+                @if (user?.UserId == Model.User.UserId)
+                {
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Edit Profile
+                    </button>
+                }
+                else
+                {
+                    if (user == null)
+                    {
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='/Friends?id=@Model.User.UserId'">
+                            Add Friend
+                        </button>
+                    }
+                    else
+                    {
+                        if (Model.FriendRequest == null)
+                        {
+                            if (Model.Friend == null)
+                            {
+                                <button type="button" class="btn btn-secondary" onclick="window.location.href='/Friends?id=@Model.User.UserId'">
+                                    Add Friend
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#removeConfirm">
+                                    Friends
+                                </button>
+                            }
+                        }
+                        else if (Model.FriendRequest.FromUserId == user?.UserId)
+                        {
+                            <button type="button" class="btn btn-danger" onclick="window.location.href='/Friends?id=@Model.User.UserId&type=delete-fr'">
+                                Remove Request
+                            </button>
+                        }
+                        else if (Model.FriendRequest.ToUserId == user?.UserId)
+                        {
+                            <button type="button" class="btn btn-outline-dark fw-bold" onclick="window.location.href='/Friends?id=@Model.User.UserId&type=add'">
+                                Accept Request
+                            </button>
+                        }
+                    }
+                }
             </div>
             <div class="col-md-7">
                 <div class="card profile-card">
@@ -81,7 +128,7 @@
             </div>
 
 
-            <!-- Modal -->
+            <!-- Modal Edit -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -170,6 +217,25 @@
                     </div>
                 </div>
             </div>
+
+            @* Modal Confirm Remove Friend *@
+            <div class="modal fade" id="removeConfirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Remove Friend</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Do you want to remove this friend?</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button type="button" class="btn btn-dark" onclick="window.location.href='/Friends?id=@Model.User.UserId&type=delete'">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -199,7 +265,7 @@
 </script>
 
 @section Scripts
-        {
+{
     <script type="text/javascript">
         $("#callAjax").click(function () {
             $.ajax({

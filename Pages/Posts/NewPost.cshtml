@@ -12,6 +12,7 @@
 
 <div style="margin-top: 100px;" class="d-flex flex-column">
     <div class="post border shadow">
+        <h1 class="m-3 p-3 fw-bolder border-bottom">New Post</h1>
         <form class="p-3" method="post" enctype="multipart/form-data">
             <div class="d-flex w-100 justify-content-between mb-3">
                 <div class="d-flex align-items-center gap-3 ">
@@ -25,8 +26,8 @@
                     <label for="privacyMode">Privacy Mode:</label>
                     <select class="form-select" id="privacyMode" asp-for="PostDto.PrivacyMode">
                         <option value="public">Public</option>
-                        <option value="private">Private</option>
                         <option value="friends">Friends</option>
+                        <option value="private">Private</option>
                     </select>
                 </div>
             </div>

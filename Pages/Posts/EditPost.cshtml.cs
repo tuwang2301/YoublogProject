@@ -100,6 +100,9 @@ namespace YoublogProject.Pages.Posts
 
             ModelState.Clear();
 
+            Response.Redirect("Index");
+            return;
+
         }
     }
 }

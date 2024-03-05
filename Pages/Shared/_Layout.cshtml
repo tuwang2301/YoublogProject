@@ -89,7 +89,7 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <li><a class="dropdown-item" href="/Profile?id=@user.UserId">My Profile</a></li>
                             <li><a class="dropdown-item" asp-area="" asp-page="/Posts/Index">My Posts</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-page="/Friends/Index">My Friends</a></li>
+                            <li><a class="dropdown-item" href="/Friends/MyFriends?id=@user.UserId">My Friends</a></li>
                             <li><a class="dropdown-item" asp-area="" asp-page="/Logout">Logout</a></li>
                         </ul>
                     </div>

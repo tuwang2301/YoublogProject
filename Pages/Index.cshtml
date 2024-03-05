@@ -30,14 +30,16 @@
                 <div class="d-flex w-100 justify-content-between align-items-center px-3 pt-3">
 
                     <div class="d-flex align-items-center gap-3">
-                        <img class="avatar-circle" src="~/media/@p?.User?.Avatar" />
+                        <a href="/Profile?id=@p.UserId">
+                            <img class="avatar-circle" src="~/media/@p?.User?.Avatar" />
+                        </a>
                         <div class="d-flex flex-column align-items-baseline">
                             <span class="name">@p?.User?.FullName</span>
                             <i>@p?.CreatedAt?.ToString("MM/dd/yyyy")</i>
                         </div>
                     </div>
 
-                    <div>
+                    <div class="d-flex gap-3">
                         @if (p.PrivacyMode == "public")
                         {
                             <i class="fa-solid fa-earth-americas fa-lg"></i>
@@ -49,6 +51,10 @@
                         else
                         {
                             <i class="fa-solid fa-user fa-lg"></i>
+                        }
+                        @if (user?.UserId == p.UserId)
+                        {
+                            <i onclick="window.location.href='/Posts/EditPost?id=@p.PostId'" class="fa-solid fa-pen-to-square fa-lg edit-icon"></i>
                         }
                     </div>
                 </div>

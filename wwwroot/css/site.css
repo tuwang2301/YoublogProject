@@ -54,11 +54,11 @@ html {
     transition: all ease-in-out 0.1s;
 }
 
-.story:hover {
-    height: 210px;
-    width: 160px;
-    cursor: pointer;
-}
+    .story:hover {
+        height: 210px;
+        width: 160px;
+        cursor: pointer;
+    }
 
 .story-image {
     height: 100%;
@@ -72,7 +72,7 @@ html {
     left: 10px;
 }
 
-.story span{
+.story span {
     position: absolute;
     bottom: 3px;
     left: 10px;
@@ -93,3 +93,18 @@ html {
     .post-action div:hover {
         background-color: #e9ecef;
     }
+
+.edit-icon {
+    transition: all ease 0.2s;
+}
+
+    .edit-icon:hover {
+        cursor: pointer;
+        color: #535457;
+    }
+
+.filter {
+    position: fixed;
+    left: 30px;
+    width: 20%;
+}

@@ -33,6 +33,7 @@ namespace YoublogProject.Pages
                       .Include(p => p.Content)
                       .Include(p => p.User)
                       .Include(p => p.Reactions)
+                      .OrderByDescending(p => p.CreatedAt)
                       .ToList();
             }
             else
@@ -49,6 +50,7 @@ namespace YoublogProject.Pages
                     .Include(p => p.Content)
                     .Include(p => p.User)
                     .Include(p => p.Reactions)
+                    .OrderByDescending(p => p.CreatedAt)
                     .ToList();
             }
         }
