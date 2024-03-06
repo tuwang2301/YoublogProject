@@ -1,0 +1,137 @@
+﻿@page
+@inject IHttpContextAccessor HttpContextAccessor;
+@using YoublogProject.Utils
+@using YoublogProject.Models
+@model YoublogProject.Pages.Posts.PostDetailModel
+@{
+}
+@{
+    var user = SessionUtil.GetObjectFromJson<User>(HttpContextAccessor.HttpContext.Session, "user") as User;
+    var checkLike = Model.Reactions.FirstOrDefault(r => r.PostId == Model.Post.PostId && r.UserId == user?.UserId) != null;
+}
+
+<style>
+    .post-detail {
+        width: 1300px;
+        height: 600px;
+        overflow: hidden;
+        display: flex;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .comment {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+    }
+</style>
+
+<div class="vh-100 d-flex flex-column align-items-center justify-content-center">
+    <div class="post-detail shadow-lg">
+
+        @if (Model?.Post?.Content?.ContentUrl != null)
+        {
+            <div class="bg-black w-100 h-100 d-flex flex-column justify-content-center align-items-center">
+                <img style="max-height: 100%; max-width: 100%;" src="/media/@Model.Post.Content.ContentUrl" />
+            </div>
+        }
+        <div class="p-3 d-flex flex-column justify-content-between w-100">
+            <div>
+                <div class="d-flex w-100 justify-content-between align-items-center px-3 pt-3">
+
+                    <div class="d-flex align-items-center gap-3">
+                        <img class="avatar-circle" src="~/media/@Model.Post.User?.Avatar" />
+                        <div class="d-flex flex-column align-items-baseline">
+                            <span class="name">@Model.Post.User?.FullName</span>
+                            <i>@Model.Post.CreatedAt?.ToString("MM/dd/yyyy")</i>
+                        </div>
+                    </div>
+
+                    <div>
+                        @if (Model.Post.PrivacyMode == "public")
+                        {
+                            <i class="fa-solid fa-earth-americas fa-lg"></i>
+                        }
+                        else if (Model.Post.PrivacyMode == "friends")
+                        {
+                            <i class="fa-solid fa-user-group fa-lg"></i>
+                        }
+                        else
+                        {
+
+                            <i class="fa-solid fa-user fa-lg"></i>
+                        }
+                        @if (user?.UserId == Model.Post.UserId)
+                        {
+                            <i onclick="window.location.href='/Posts/EditPost?id=@Model.Post.PostId'" class="fa-solid fa-pen-to-square fa-lg edit-icon"></i>
+                        }
+                    </div>
+                </div>
+
+                <div class="p-3 pb-0">
+                    @Model.Post.Content?.Description
+                </div>
+
+                <div class="p-3 d-flex justify-content-between">
+                    <span>
+                        <i class="fa-solid fa-heart"></i>
+                        <span id="like-count-@Model.Post.PostId">@Model.Post.Reactions.Count</span>
+                    </span>
+                    <span>
+                        <i class="fa-solid fa-comment"></i>
+                        <span id="like-count-@Model.Post.PostId">@Model.Post.Comments.Count</span>
+                    </span>
+                </div>
+
+                <div class="post-action d-flex justify-content-around border-top border-bottom">
+                    <div role="button" class="like" data-post-id="@Model.Post.PostId">
+                        @if (checkLike)
+                        {
+                            <i id="like-icon-@Model.Post.PostId" class="fa-solid fa-heart fa-lg"></i>
+                        }
+                        else
+                        {
+                            <i id="like-icon-@Model.Post.PostId" class="fa-regular fa-heart fa-lg"></i>
+
+                        }
+                        <span style="font-size: 20px;">Like</span>
+                    </div>
+                    <div role="button">
+                        <i class="fa-regular fa-comment fa-lg"></i>
+                        <span style="font-size: 20px;">Comment</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 h-100" style="overflow-y: scroll;">
+                @foreach (Comment c in Model.Comments)
+                {
+                    <div class="d-flex gap-3 my-3   ">
+                        <div class="d-flex flex-column align-items-center">
+                            <img class="avatar-circle" src="~/media/@c?.User?.Avatar" />
+                            <div>
+                                <i style="font-size: 12px;">@c?.CreatedAt?.ToString("MM/dd/yyyy")</i>
+                            </div>
+                        </div>
+                        <div style="background-color: #ffffff; max-width: 100%; height: fit-content" class="border rounded text-start p-2 px-3">
+                            @c?.Content
+                        </div>
+                    </div>
+                }
+            </div>
+            @if (user != null)
+            {
+                <div class="pt-3 border-top w-100 d-flex gap-3 align-items-center px-3 ">
+                    <img class="avatar-circle" src="~/media/@user.Avatar" />
+                    <form method="post" class="d-flex w-100 gap-3">
+                        <input name="comment" class="w-100  rounded" />
+                        <button class="btn btn-dark fw-bold">Comment</button>
+                    </form>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>

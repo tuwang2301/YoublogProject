@@ -11,68 +11,63 @@
     var user = SessionUtil.GetObjectFromJson<User>(HttpContextAccessor.HttpContext.Session, "user") as User;
 }
 
-<div style="margin-top: 100px;" class="text-center d-flex flex-column align-items-center">
-    <div class="stories">
-        @for (var i = 0; i < 6; i++)
-        {
-            <div class="story shadow">
-                <img class="avatar-circle" src="~/media/namdung.jpg" />
-                <img class="story-image rounded-3 border" src="/media/namdung.jpg" />
-                <span class="fw-bold text-white">Nam Dung</span>
-            </div>
-        }
-    </div>
+<div style="margin-top: 150px;" class="text-center d-flex flex-column align-items-center">
     <div class="post-list">
         @foreach (Post p in Model.Posts)
         {
             var checkLike = Model.Reactions.FirstOrDefault(r => r.PostId == p.PostId && r.UserId == user?.UserId) != null;
-            <div class="post border shadow">
-                <div class="d-flex w-100 justify-content-between align-items-center px-3 pt-3">
 
-                    <div class="d-flex align-items-center gap-3">
-                        <a href="/Profile?id=@p.UserId">
-                            <img class="avatar-circle" src="~/media/@p?.User?.Avatar" />
-                        </a>
-                        <div class="d-flex flex-column align-items-baseline">
-                            <span class="name">@p?.User?.FullName</span>
-                            <i>@p?.CreatedAt?.ToString("MM/dd/yyyy")</i>
+            <div class="post border shadow">
+                <div class="post-detail-card" onclick="window.location.href='/Posts/PostDetail?id=@p.PostId'">
+                    <div class="d-flex w-100 justify-content-between align-items-center px-3 pt-3">
+
+                        <div class="d-flex align-items-center gap-3">
+                            <a href="/Profile?id=@p.UserId">
+                                <img class="avatar-circle" src="~/media/@p?.User?.Avatar" />
+                            </a>
+                            <div class="d-flex flex-column align-items-baseline">
+                                <a class="text-decoration-none text-black" href="/Profile?id=@p.UserId">
+                                    <span class="name">@p?.User?.FullName</span>
+                                </a>
+                                <i>@p?.CreatedAt?.ToString("MM/dd/yyyy")</i>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-3">
+                            @if (p.PrivacyMode == "public")
+                            {
+                                <i class="fa-solid fa-earth-americas fa-lg"></i>
+                            }
+                            else if (p.PrivacyMode == "friends")
+                            {
+                                <i class="fa-solid fa-user-group fa-lg"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-user fa-lg"></i>
+                            }
+                            @if (user?.UserId == p.UserId)
+                            {
+                                <i onclick="window.location.href='/Posts/EditPost?id=@p.PostId'" class="fa-solid fa-pen-to-square fa-lg edit-icon"></i>
+                            }
                         </div>
                     </div>
-
-                    <div class="d-flex gap-3">
-                        @if (p.PrivacyMode == "public")
-                        {
-                            <i class="fa-solid fa-earth-americas fa-lg"></i>
-                        }
-                        else if (p.PrivacyMode == "friends")
-                        {
-                            <i class="fa-solid fa-user-group fa-lg"></i>
-                        }
-                        else
-                        {
-                            <i class="fa-solid fa-user fa-lg"></i>
-                        }
-                        @if (user?.UserId == p.UserId)
-                        {
-                            <i onclick="window.location.href='/Posts/EditPost?id=@p.PostId'" class="fa-solid fa-pen-to-square fa-lg edit-icon"></i>
-                        }
+                    <div class="text-start mt-3 px-3">
+                        @p.Content?.Description
                     </div>
-                </div>
-                <div class="text-start mt-3 px-3">
-                    @p.Content?.Description
-                </div>
-                @if (p?.Content?.ContentUrl != null)
-                {
-                    <img class="photo" src="/media/@p.Content?.ContentUrl" />
-                }
-                <div class="p-3 d-flex justify-content-between">
-                    <span>
-                        <i class="fa-solid fa-heart"></i>
-                        <span id="like-count-@p.PostId">@p.Reactions.Count</span>
-                    </span>
-                    <div class="d-flex gap-4">
-                        <span>7 Comments</span>
-                        <span>1 Shares</span>
+                    @if (p?.Content?.ContentUrl != null)
+                    {
+                        <img class="photo" src="/media/@p.Content?.ContentUrl" />
+                    }
+                    <div class="p-3 d-flex justify-content-between">
+                        <span>
+                            <i class="fa-solid fa-heart"></i>
+                            <span id="like-count-@p.PostId">@p.Reactions.Count</span>
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-comment"></i>      
+                            <span id="like-count-@p.PostId">@p.Comments.Count</span>
+                        </span>
                     </div>
                 </div>
                 <div class="post-action d-flex justify-content-around border-top border-bottom">
@@ -88,31 +83,9 @@
                         }
                         <span style="font-size: 20px;">Like</span>
                     </div>
-                    <div role="button">
+                    <div role="button" onclick="window.location.href='/Posts/PostDetail?id=@p.PostId'">
                         <i class="fa-regular fa-comment fa-lg"></i>
                         <span style="font-size: 20px;">Comment</span>
-                    </div>
-                    <div role="button">
-                        <i class="fa-regular fa-share-from-square fa-lg"></i>
-                        <span style="font-size: 20px;">Share</span>
-                    </div>
-                </div>
-                <div class="p-3">
-                    @for (var j = 0; j < 6; j++)
-                    {
-                        <div class="d-flex gap-3 my-3 align-items-center">
-                            <img class="avatar-circle" src="~/media/namdung.jpg" />
-                            <span style="background-color: #ffffff; width: fit-content" class="border rounded text-start p-1 px-3">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut pulvinar odio, non rutrum nisi. Vivamus sed
-                            </span>
-                        </div>
-                    }
-                    <div class="border-top d-flex gap-3 align-items-center pt-3 ">
-                        <img class="avatar-circle" src="~/media/namdung.jpg" />
-                        <form method="post" class="d-flex w-100 gap-3">
-                            <input name="comment rounded" class="w-100" />
-                            <button class="btn btn-dark fw-bold">Comment</button>
-                        </form>
                     </div>
                 </div>
             </div>

@@ -47,56 +47,62 @@
                 <div class="card profile-card shadow">
                     <img src="/media/@Model.User.Avatar" class="card-img-top profile-avatar" alt="Avatar">
                 </div>
-                @if (user?.UserId == Model.User.UserId)
-                {
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Edit Profile
+                <div class="d-flex w-100 justify-content-between">
+
+                    <button type="button" class="btn btn-dark" onclick="window.location.href='/Posts/Index?id=@Model.User.UserId'">
+                        Posts
                     </button>
-                }
-                else
-                {
-                    if (user == null)
+                    @if (user?.UserId == Model.User.UserId)
                     {
-                        <button type="button" class="btn btn-secondary" onclick="window.location.href='/Friends?id=@Model.User.UserId'">
-                            Add Friend
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Edit Profile
                         </button>
                     }
                     else
                     {
-                        if (Model.FriendRequest == null)
+                        if (user == null)
                         {
-                            if (Model.Friend == null)
-                            {
-                                <button type="button" class="btn btn-secondary" onclick="window.location.href='/Friends?id=@Model.User.UserId'">
-                                    Add Friend
-                                </button>
-                            }
-                            else
-                            {
-                                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#removeConfirm">
-                                    Friends
-                                </button>
-                            }
-                        }
-                        else if (Model.FriendRequest.FromUserId == user?.UserId)
-                        {
-                            <button type="button" class="btn btn-danger" onclick="window.location.href='/Friends?id=@Model.User.UserId&type=delete-fr'">
-                                Remove Request
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='/Friends?id=@Model.User.UserId'">
+                                Add Friend
                             </button>
                         }
-                        else if (Model.FriendRequest.ToUserId == user?.UserId)
+                        else
                         {
-                            <button type="button" class="btn btn-outline-dark fw-bold" onclick="window.location.href='/Friends?id=@Model.User.UserId&type=add'">
-                                Accept Request
-                            </button>
+                            if (Model.FriendRequest == null)
+                            {
+                                if (Model.Friend == null)
+                                {
+                                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/Friends?id=@Model.User.UserId'">
+                                        Add Friend
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#removeConfirm">
+                                        Friends
+                                    </button>
+                                }
+                            }
+                            else if (Model.FriendRequest.FromUserId == user?.UserId)
+                            {
+                                <button type="button" class="btn btn-danger" onclick="window.location.href='/Friends?id=@Model.User.UserId&type=delete-fr'">
+                                    Remove Request
+                                </button>
+                            }
+                            else if (Model.FriendRequest.ToUserId == user?.UserId)
+                            {
+                                <button type="button" class="btn btn-outline-dark fw-bold" onclick="window.location.href='/Friends?id=@Model.User.UserId&type=add'">
+                                    Accept Request
+                                </button>
+                            }
                         }
                     }
-                }
+                </div>
             </div>
             <div class="col-md-7">
                 <div class="card profile-card">
                     <div class="card-header profile-header bg-dark">
-                        <h3>My Profile</h3>
+                        <h3>Profile</h3>
                     </div>
                     <div class="card-body profile-info">
                         <div class="d-flex justify-content-between border-bottom">
@@ -123,6 +129,7 @@
                         <div class="d-flex justify-content-between border-bottom">
                             <h3>Join At</h3> <h4 class="text-secondary">@Model.User.CreatedAt?.ToString("dd/MM/yyyy")</h4>
                         </div>
+
                     </div>
                 </div>
             </div>

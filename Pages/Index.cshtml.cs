@@ -26,19 +26,21 @@ namespace YoublogProject.Pages
 
             Reactions = context.Reactions.ToList();
 
-            if (user == null)
-            {
-                Posts = context.Posts
-                      .Where(p => p.PrivacyMode == "public")
+            var postBase = context.Posts
                       .Include(p => p.Content)
                       .Include(p => p.User)
                       .Include(p => p.Reactions)
-                      .OrderByDescending(p => p.CreatedAt)
-                      .ToList();
+                      .Include(p => p.Comments)
+                      .OrderByDescending(p => p.CreatedAt);
+                      
+
+            if (user == null)
+            {
+                Posts = postBase.Where(p => p.PrivacyMode == "public").ToList();
             }
             else
             {
-                Posts = context.Posts
+                Posts = postBase
                     .Where(p =>
                     (p.PrivacyMode == "public") ||
                     (p.PrivacyMode == "friends" && context.Friends.Any(f =>
@@ -47,10 +49,6 @@ namespace YoublogProject.Pages
                     ) || (p.UserId == user.UserId)) ||
                     (p.PrivacyMode == "private" && p.UserId == user.UserId)
                     )
-                    .Include(p => p.Content)
-                    .Include(p => p.User)
-                    .Include(p => p.Reactions)
-                    .OrderByDescending(p => p.CreatedAt)
                     .ToList();
             }
         }

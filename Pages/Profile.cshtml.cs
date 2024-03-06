@@ -55,7 +55,9 @@ namespace YoublogProject.Pages
                 return;
             }
 
-            FriendRequest = context.FriendRequests.FirstOrDefault(fr => fr.FromUserId == id || fr.ToUserId == id);
+            FriendRequest = context.FriendRequests.FirstOrDefault(fr =>
+            (fr.FromUserId == id && fr.ToUserId == user.UserId) ||
+            (fr.ToUserId == id && fr.FromUserId == user.UserId));
 
                 Friend = context.Friends.FirstOrDefault(fr =>
             (fr.UserId1 == user.UserId && fr.UserId2 == id) ||

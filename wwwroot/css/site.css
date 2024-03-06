@@ -25,6 +25,7 @@ html {
     width: 100%;
     border-radius: 10px;
     background-color: #f8f9fa;
+    overflow: hidden;
 }
 
 .avatar-circle {
@@ -113,4 +114,13 @@ html {
     position: fixed;
     left: 30px;
     width: 20%;
+}
+
+.post-detail-card {
+    transition: all ease-in-out 0.2s;
+}
+
+.post-detail-card:hover {
+    cursor: pointer;
+    background-color: #e9ecef;
 }
